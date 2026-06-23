@@ -69,9 +69,16 @@ def make_strategy(cfg: dict) -> fl.server.strategy.FedAvg:
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", required=True, help="YAML 配置路径")
+    ap.add_argument(
+        "--server_address",
+        default=None,
+        help="覆盖 cfg 里的 server_address (例: 0.0.0.0:8082, 用于避免端口冲突)",
+    )
     args = ap.parse_args()
 
     cfg = load_config(args.config)
+    if args.server_address:
+        cfg["server_address"] = args.server_address
     log.info(
         f"starting exp={cfg['exp_name']} dataset={cfg['dataset']} model={cfg['model']} "
         f"clients={cfg['num_clients']} rounds={cfg['num_rounds']}"

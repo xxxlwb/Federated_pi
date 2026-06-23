@@ -1,13 +1,19 @@
-# E8 CIFAR-10 + SqueezeNet1_1 (轻量化对比)
+# ============================================================================
+# E8 发挥实验: CIFAR-10 + SqueezeNet1_1 (轻量化网络对比)
+# 用途: 用 torchvision.models.squeezenet1_1 (修改首层 kernel/stride 适配 32×32),
+#       与 E6 自定义 CNN 和 E7 MobileNetV2 对比训练时间/内存/准确率.
+# SqueezeNet1_1 参数量 ≈ 0.7M (改首层后), 三者中参数最少, 适合资源极度受限的边缘设备.
+# ============================================================================
+
 exp_name: cifar10_squeezenet
 dataset: cifar10
-model: squeezenet1_1
+model: squeezenet1_1           # ⭐ 切换到 SqueezeNet1_1
 num_classes: 10
 
 num_clients: 2
 num_rounds: 20
 local_epochs: 1
-batch_size: 32
+batch_size: 32                 # SqueezeNet 参数少, 内存够用 batch=32
 learning_rate: 0.01
 
 partition:

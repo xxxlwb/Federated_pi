@@ -1,0 +1,36 @@
+#!/usr/bin/expect -f
+# 自动 ssh 到 pi-02 树莓派, 用法同 pi_ssh.exp
+log_user 1
+set timeout 1800
+set host "pi-02.local"
+set user "pi"
+set password "123456"
+set cmd [lindex $argv 0]
+
+spawn ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+    -o ConnectTimeout=15 -o PreferredAuthentications=password \
+    -o PubkeyAuthentication=no $user@$host $cmd
+
+expect {
+    -re "(P|p)assword:" {
+        sleep 0.2
+        send -- "$password\r"
+        expect {
+            -re "(P|p)assword:" {
+                puts "\n>>> AUTH FAILED — password rejected"
+                exit 2
+            }
+            eof
+        }
+    }
+    "Permission denied" {
+        puts "\n>>> AUTH FAILED"
+        exit 2
+    }
+    timeout {
+        puts "\n>>> TIMEOUT waiting for password prompt"
+        exit 3
+    }
+}
+catch wait result
+exit [lindex $result 3]

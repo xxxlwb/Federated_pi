@@ -125,6 +125,8 @@ sed 's/num_clients: 2/num_clients: 1/' configs/mnist_iid_2clients.yaml > /tmp/si
   Pi 上 `tmux attach -t fl` 检查
 - **clean 重跑**: `rm -rf results/<exp_name>` 重跑某个实验
 
+> 📖 **环境装好之后,各实验的具体启动命令(Mac 端 + Pi 端逐字命令)见 [`docs/run_experiments.md`](run_experiments.md)。**
+
 ## 9. 故障排查
 
 | 现象 | 原因 | 解决 |

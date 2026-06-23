@@ -1,20 +1,28 @@
-# 真机演示: 1 台树莓派作为 client, Mac 作为 server
-# (因为只有 1 台 Pi, 设 num_clients=1 即可退化成单 client FedAvg)
+# ============================================================================
+# 真机演示配置: 1 台树莓派作为 client, Mac 作为 server
+# 用途: 验证跨机分布式联邦学习链路, 通过家用局域网 gRPC 通信.
+# 因为只有 1 台 Pi, 设 num_clients=1 即可退化成单 client FedAvg
+# (即每轮 server 把全局参数发给 Pi, Pi 训练后再传回, 等价于"远程托管训练").
+# 预期: 3 轮训练 ≈ 6 分钟, 最终准确率 ≈ 99%
+# ============================================================================
+
 exp_name: mnist_pi_demo
 dataset: mnist
 model: mnist_cnn
 num_classes: 10
 
-num_clients: 1
-num_rounds: 3
+num_clients: 1                 # ⭐ 只有 1 台 Pi, 用 1 client; server 端 min_available_clients=1
+num_rounds: 3                  # 演示用短一些
 local_epochs: 1
 batch_size: 32
 learning_rate: 0.01
 
 partition:
-  strategy: iid
+  strategy: iid                # 1 client 时 IID/Non-IID 等价 (全部数据都给同一个 client)
 
-# server 监听所有网卡; client 端用 --server_address 覆盖为 Mac 的 IP
+# server 监听所有网卡; 启动 client 时用命令行参数覆盖:
+#   python -m fed_pi.client --config ... --cid 0 \
+#       --server_address <Mac的局域网IP>:8081
 server_address: "0.0.0.0:8081"
 seed: 42
 device: cpu

@@ -1,14 +1,20 @@
-# E7 CIFAR-10 + MobileNetV2 (轻量化对比)
-# 树莓派上 batch_size 建议 8, 内存够时可调大到 16
+# ============================================================================
+# E7 发挥实验: CIFAR-10 + MobileNetV2 (轻量化网络对比)
+# 用途: 用 torchvision.models.mobilenet_v2 (修改首层 stride 适配 32×32) 训练,
+#       与 E6(自定义 CNN) 和 E8(SqueezeNet) 同条件对比.
+# MobileNetV2 参数量 ≈ 2.2M, 比基线 CNN 大 ~8 倍, 但用 depthwise conv 加速.
+# 注意: 树莓派内存有限, batch_size 调小到 16, 避免 OOM.
+# ============================================================================
+
 exp_name: cifar10_mobilenet
 dataset: cifar10
-model: mobilenet_v2
+model: mobilenet_v2            # ⭐ 切换到 MobileNetV2 (factory.py 已 register)
 num_classes: 10
 
 num_clients: 2
 num_rounds: 20
 local_epochs: 1
-batch_size: 16
+batch_size: 16                 # ⭐ 树莓派内存约束, MobileNet batch 调小
 learning_rate: 0.01
 
 partition:

@@ -47,13 +47,16 @@ pytest tests/ -v
 
 ## 真机部署 (1~2 台树莓派)
 
-详见 `docs/setup_pi.md`. 简略步骤:
+详见 `docs/setup_pi.md`(环境搭建)和 **`docs/run_experiments.md`(逐个实验的 Mac/Pi 端命令清单)**。简略步骤:
 
 1. 树莓派 Pi OS 64-bit, Python 3.11, 开 2GB swap
 2. `pip install -r requirements-pi.txt --extra-index-url https://www.piwheels.org/simple`
 3. Mac 启动 server: `./scripts/run_server.sh configs/mnist_iid_2clients.yaml`
 4. Pi 启动 client: `./scripts/run_client.sh configs/mnist_iid_2clients.yaml 0 <mac_ip>:8081`
    (如果有第二台 Pi 就再启动一个 cid=1)
+
+> 📖 **每个实验在 Mac 和 Pi 上的精确命令对照**(本机模拟 / 1 Pi / 2 Pi 三种模式),
+> 见 [`docs/run_experiments.md`](docs/run_experiments.md)。
 
 ## 实验设计
 
@@ -117,5 +120,6 @@ device: cpu
 
 ## 进一步阅读
 
-- `docs/setup_pi.md` — 树莓派环境搭建详细步骤
-- `docs/architecture.md` — FedAvg 流程图与模块依赖
+- [`docs/run_experiments.md`](docs/run_experiments.md) — **8 个实验在 Mac / 1 Pi / 2 Pi 上的逐字命令清单**(最常用)
+- [`docs/setup_pi.md`](docs/setup_pi.md) — 树莓派环境搭建详细步骤
+- [`docs/architecture.md`](docs/architecture.md) — FedAvg 流程图与模块依赖

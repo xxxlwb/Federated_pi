@@ -1,4 +1,10 @@
-# E4 Non-IID 接近 IID: alpha=1.0
+# ============================================================================
+# E4 Non-IID 接近 IID 实验: alpha=1.0
+# 用途: 弱 Non-IID, 实际上各 client 数据分布已经比较接近.
+#       作为 Non-IID 实验的"上界"对照 — 越接近 IID, 准确率应越接近基线.
+# 预期: 准确率接近 E1 (IID 基线), 收敛比 α=0.1 稳定得多
+# ============================================================================
+
 exp_name: mnist_noniid_a10
 dataset: mnist
 model: mnist_cnn
@@ -12,7 +18,7 @@ learning_rate: 0.01
 
 partition:
   strategy: dirichlet
-  alpha: 1.0
+  alpha: 1.0                   # ⭐ 较大浓度, 各 client 类别分布接近均匀
 
 server_address: "0.0.0.0:8081"
 seed: 42

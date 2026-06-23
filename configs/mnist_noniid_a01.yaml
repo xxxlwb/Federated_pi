@@ -1,18 +1,28 @@
-# E2 Non-IID 极端: alpha=0.1, 各 client 几乎只有 1~2 个类
-exp_name: mnist_noniid_a01
+# ============================================================================
+# E2 Non-IID 极端实验: alpha=0.1
+# 用途: 模拟客户端数据分布严重不一致 — 比如 client-0 几乎只有数字 "0,1,2",
+#       client-1 几乎只有 "7,8,9". 这是联邦学习里最难收敛的场景.
+# 预期: 全局准确率比 IID 基线低 5-15 个百分点, 曲线明显震荡
+# ============================================================================
+
+exp_name: mnist_noniid_a01     # 实验名 (a01 表示 alpha=0.1)
 dataset: mnist
 model: mnist_cnn
 num_classes: 10
 
 num_clients: 2
-num_rounds: 15
+num_rounds: 15                 # 比 IID 基线多跑几轮, 因为 Non-IID 收敛慢
 local_epochs: 1
 batch_size: 32
 learning_rate: 0.01
 
 partition:
-  strategy: dirichlet
-  alpha: 0.1
+  strategy: dirichlet          # Dirichlet 分布做 Non-IID 划分 (经典做法)
+  alpha: 0.1                   # ⭐ Dirichlet 浓度参数:
+                               #   alpha → 0:   每个类几乎只分给 1 个 client (极端 Non-IID)
+                               #   alpha = 1:   每个类按较随机比例分给各 client
+                               #   alpha → ∞:  每个类均分给所有 client (退化为 IID)
+                               # 0.1 是"严重偏移"档, 实验里常用
 
 server_address: "0.0.0.0:8081"
 seed: 42

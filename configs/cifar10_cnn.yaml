@@ -1,17 +1,24 @@
-# E6 CIFAR-10 + 自定义 CNN (基线)
+# ============================================================================
+# E6 发挥实验: CIFAR-10 + 自定义 CNN (彩色图像基线)
+# 用途: 将数据集从 MNIST 升级到 CIFAR-10 (3×32×32 彩色图, 10 类),
+#       网络换成 3 个 Conv-BN-ReLU-Pool 块 + GAP + FC (Cifar10CNN, ~290K 参数).
+#       作为后面 MobileNet/SqueezeNet 对比的基线.
+# 预期: 20 轮后准确率 ≈ 60-70% (受限于 batch=32 / lr=0.01 / 无 data aug 调优)
+# ============================================================================
+
 exp_name: cifar10_cnn
-dataset: cifar10
-model: cifar_cnn
+dataset: cifar10               # ⭐ 改用 CIFAR-10 (3 通道, 32×32)
+model: cifar_cnn               # ⭐ 用 Cifar10CNN 而不是 mnist_cnn
 num_classes: 10
 
 num_clients: 2
-num_rounds: 20
+num_rounds: 20                 # CIFAR 收敛更慢, 多跑几轮
 local_epochs: 1
 batch_size: 32
 learning_rate: 0.01
 
 partition:
-  strategy: iid
+  strategy: iid                # 模型对比时控制数据划分一致, 用 IID
 
 server_address: "0.0.0.0:8081"
 seed: 42

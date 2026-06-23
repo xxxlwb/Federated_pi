@@ -1,4 +1,12 @@
-# E5 样本量极度不均衡: client0 拿 90%, client1 拿 10%
+# ============================================================================
+# E5 样本量极度不均衡实验: 9:1
+# 用途: 模拟联邦场景中"大客户端 + 小客户端"的常见现象
+#       (例如医院 A 有 90% 的病人数据, 医院 B 只有 10%).
+#       FedAvg 按样本数加权, 所以全局模型会被大 client 主导.
+# 预期: 全局准确率主要反映 client-0 (90% 数据) 的学习效果;
+#       小 client 自己的特殊样本贡献被稀释.
+# ============================================================================
+
 exp_name: mnist_imbalance_91
 dataset: mnist
 model: mnist_cnn
@@ -11,8 +19,9 @@ batch_size: 32
 learning_rate: 0.01
 
 partition:
-  strategy: imbalance
-  ratios: [0.9, 0.1]
+  strategy: imbalance          # 按比例分配样本数 (类别仍随机)
+  ratios: [0.9, 0.1]           # ⭐ client-0 拿 90% 样本, client-1 拿 10%
+                               # 列表长度必须等于 num_clients, 求和必须等于 1.0
 
 server_address: "0.0.0.0:8081"
 seed: 42

@@ -13,6 +13,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
+from tqdm import tqdm
 
 
 def local_train(
@@ -33,9 +34,16 @@ def local_train(
     t0 = time.perf_counter()
     last_avg_loss = 0.0
 
-    for _ in range(epochs):
+    for ep in range(epochs):
         total_loss, n_batches = 0.0, 0
-        for x, y in loader:
+        pbar = tqdm(
+            loader,
+            desc=f"train ep {ep + 1}/{epochs}",
+            leave=False,
+            dynamic_ncols=True,
+            mininterval=1.0,  # 1s 刷新一次, 减少 SSH 输出量
+        )
+        for x, y in pbar:
             x, y = x.to(device), y.to(device)
             optimizer.zero_grad()
             logits = model(x)
@@ -44,6 +52,7 @@ def local_train(
             optimizer.step()
             total_loss += loss.item()
             n_batches += 1
+            pbar.set_postfix(loss=f"{loss.item():.4f}")
         last_avg_loss = total_loss / max(1, n_batches)
 
     elapsed = time.perf_counter() - t0

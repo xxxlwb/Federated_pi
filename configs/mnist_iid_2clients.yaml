@@ -1,18 +1,24 @@
-# E1 基线: MNIST + IID + 2 客户端
-exp_name: mnist_iid_2clients
-dataset: mnist
-model: mnist_cnn
-num_classes: 10
+# ============================================================================
+# E1 基线实验: MNIST + IID + 2 客户端 + 5 轮
+# 用途: 验证 FedAvg 流程正常工作, 作为后续所有实验的对照组
+# 预期: 5 轮后全局准确率 ≈ 97-99%
+# ============================================================================
 
-num_clients: 2
-num_rounds: 5
-local_epochs: 1
-batch_size: 32
-learning_rate: 0.01
+exp_name: mnist_iid_2clients   # 实验名, 决定 results/<exp_name>/ 输出目录
+dataset: mnist                 # 数据集: mnist (28×28 灰度 / 10 类) 或 cifar10
+model: mnist_cnn               # 模型: mnist_cnn(教学版 2 卷积) / cifar_cnn / mobilenet_v2 / squeezenet1_1
+num_classes: 10                # 分类数, MNIST 和 CIFAR-10 都是 10
 
-partition:
-  strategy: iid
+num_clients: 2                 # 客户端数量, 改成 1 即可单 Pi 部署
+num_rounds: 5                  # 联邦学习总轮数 (server-client 通信轮数)
+local_epochs: 1                # 每轮里每个 client 本地训练几个 epoch
+batch_size: 32                 # 本地训练的 mini-batch 大小
+learning_rate: 0.01            # 本地 SGD 学习率 (momentum=0.9 在 trainer.py 里硬编码)
 
-server_address: "0.0.0.0:8081"
-seed: 42
-device: cpu
+partition:                     # 数据划分策略 (见 fed_pi/data/partition.py)
+  strategy: iid                # iid: 完全随机均分, 各 client 数据分布相同 (理想情况)
+
+server_address: "0.0.0.0:8081" # server 监听地址; 0.0.0.0 表示所有网卡
+                               # client 端可用 --server_address 命令行参数覆盖
+seed: 42                       # 随机种子, 保证可复现 (np 和 torch 都会用)
+device: cpu                    # 运行设备, 树莓派只能 cpu (无 CUDA)
