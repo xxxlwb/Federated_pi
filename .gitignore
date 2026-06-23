@@ -9,8 +9,8 @@ __pycache__/
 .venv/
 venv/
 
-# 数据集 (torchvision 自动下载)
-data/
+# 数据集 (torchvision 自动下载) — 仅忽略仓库根目录的 data/，不影响 fed_pi/data/ 子包
+/data/
 
 # 实验产出
 results/
