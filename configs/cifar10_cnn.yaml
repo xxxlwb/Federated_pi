@@ -1,0 +1,18 @@
+# E6 CIFAR-10 + 自定义 CNN (基线)
+exp_name: cifar10_cnn
+dataset: cifar10
+model: cifar_cnn
+num_classes: 10
+
+num_clients: 2
+num_rounds: 20
+local_epochs: 1
+batch_size: 32
+learning_rate: 0.01
+
+partition:
+  strategy: iid
+
+server_address: "0.0.0.0:8081"
+seed: 42
+device: cpu

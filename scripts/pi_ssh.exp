@@ -1,0 +1,25 @@
+#!/usr/bin/expect -f
+# 自动 ssh 到树莓派执行命令并捕获输出
+# 用法: ./pi_ssh.exp "<command>"
+set timeout 60
+set host "pi-01.local"
+set user "pi"
+set password "123456"
+set cmd [lindex $argv 0]
+
+spawn ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 $user@$host $cmd
+expect {
+    "password:" {
+        send "$password\r"
+        expect eof
+    }
+    "Permission denied" {
+        puts "AUTH FAILED"
+        exit 2
+    }
+    timeout {
+        puts "TIMEOUT"
+        exit 3
+    }
+    eof
+}

@@ -1,0 +1,18 @@
+# E1 基线: MNIST + IID + 2 客户端
+exp_name: mnist_iid_2clients
+dataset: mnist
+model: mnist_cnn
+num_classes: 10
+
+num_clients: 2
+num_rounds: 5
+local_epochs: 1
+batch_size: 32
+learning_rate: 0.01
+
+partition:
+  strategy: iid
+
+server_address: "0.0.0.0:8081"
+seed: 42
+device: cpu

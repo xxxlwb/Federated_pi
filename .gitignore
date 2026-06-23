@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+
+# venv
+.venv/
+venv/
+
+# 数据集 (torchvision 自动下载)
+data/
+
+# 实验产出
+results/
+
+# 系统
+.DS_Store
+*.swp
+.vscode/
+.idea/

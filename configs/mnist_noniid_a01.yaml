@@ -1,0 +1,19 @@
+# E2 Non-IID 极端: alpha=0.1, 各 client 几乎只有 1~2 个类
+exp_name: mnist_noniid_a01
+dataset: mnist
+model: mnist_cnn
+num_classes: 10
+
+num_clients: 2
+num_rounds: 15
+local_epochs: 1
+batch_size: 32
+learning_rate: 0.01
+
+partition:
+  strategy: dirichlet
+  alpha: 0.1
+
+server_address: "0.0.0.0:8081"
+seed: 42
+device: cpu

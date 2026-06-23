@@ -1,0 +1,20 @@
+# Raspberry Pi 4/5 (Pi OS 64-bit Bookworm, Python 3.11) 依赖
+#
+# 安装 (官方 PyPI 不提供 aarch64 wheel, 用 piwheels 加速):
+#   python3 -m venv .venv && source .venv/bin/activate
+#   pip install --upgrade pip
+#   pip install -r requirements-pi.txt \
+#       --extra-index-url https://www.piwheels.org/simple
+#
+# 如果 piwheels 上的 torch 装不上, 降级试试:
+#   pip install torch==2.0.1 torchvision==0.15.2 \
+#       --index-url https://www.piwheels.org/simple \
+#       --extra-index-url https://pypi.org/simple
+
+torch>=2.0
+torchvision>=0.15
+flwr>=1.16,<1.32
+PyYAML>=6.0
+matplotlib>=3.7
+psutil>=5.9
+numpy>=1.24

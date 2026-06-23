@@ -1,0 +1,19 @@
+# E5 样本量极度不均衡: client0 拿 90%, client1 拿 10%
+exp_name: mnist_imbalance_91
+dataset: mnist
+model: mnist_cnn
+num_classes: 10
+
+num_clients: 2
+num_rounds: 10
+local_epochs: 1
+batch_size: 32
+learning_rate: 0.01
+
+partition:
+  strategy: imbalance
+  ratios: [0.9, 0.1]
+
+server_address: "0.0.0.0:8081"
+seed: 42
+device: cpu

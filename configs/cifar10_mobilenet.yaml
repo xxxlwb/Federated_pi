@@ -1,0 +1,19 @@
+# E7 CIFAR-10 + MobileNetV2 (轻量化对比)
+# 树莓派上 batch_size 建议 8, 内存够时可调大到 16
+exp_name: cifar10_mobilenet
+dataset: cifar10
+model: mobilenet_v2
+num_classes: 10
+
+num_clients: 2
+num_rounds: 20
+local_epochs: 1
+batch_size: 16
+learning_rate: 0.01
+
+partition:
+  strategy: iid
+
+server_address: "0.0.0.0:8081"
+seed: 42
+device: cpu
